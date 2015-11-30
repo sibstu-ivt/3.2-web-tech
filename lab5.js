@@ -3,7 +3,7 @@
  */
 (function(){
   window.addEventListener('load', function(){
-    document.body.innerHTML = '<h1>Страничка по заказу</h1>' +
+    var innerHtml = '<h1>Страничка по заказу</h1>' +
       '<p>Художник: <select id="select">' +
       '<option value="Тропинин">Тропинин</option>' +
       '<option value="Репин">Репин</option>' +
@@ -11,91 +11,57 @@
       '</select></p>'+
       '<p>Подпись: <input type="text" id="sign"/></p>'+
       '<div style="display: inline-block; margin: 10px">' +
-        '<p>Картинка для фона:</p>'+
-        '<p><input id="bg1" type="radio" name="background"/> <label>Картинка 1</label></p>' +
-        '<p><input id="bg2" type="radio" name="background"/> <label>Картинка 2</label></p>' +
-        '<p><input id="bg3" type="radio" name="background"/> <label>Картинка 3</label></p>' +
-        '<p><input type="button" value="Сбросить" id="clear"/></p>' +
+      '<p>Картинка для фона:</p>'+
+      '<p><input id="bg1" class="back-radio" type="radio" name="background"/> <label>Картинка 1</label></p>' +
+      '<p><input id="bg2" class="back-radio" type="radio" name="background"/> <label>Картинка 2</label></p>' +
+      '<p><input id="bg3" class="back-radio" type="radio" name="background"/> <label>Картинка 3</label></p>' +
+      '<p><input type="button" value="Сбросить" id="clear"/></p>' +
       '</div>' +
 
       '<div style="display: inline-block; margin: 10px">' +
-        '<p>Декорирование текста:</p>' +
-        '<p><input id="text-cursive" type="checkbox"/> <label>Курсив/нет</label></p>' +
-        '<p><input id="text-underline" type="checkbox"/> <label>Подчеркнутый/нет</label></p>' +
-        '<p><input id="text-bold" type="checkbox"/> <label>Жирный/нет</label></p>' +
-        '<p><input type="button" value="Показать" id="show"/></p>' +
+      '<p>Декорирование текста:</p>' +
+      '<p><input id="text-cursive" type="checkbox"/> <label>Курсив/нет</label></p>' +
+      '<p><input id="text-underline" type="checkbox"/> <label>Подчеркнутый/нет</label></p>' +
+      '<p><input id="text-bold" type="checkbox"/> <label>Жирный/нет</label></p>' +
+      '<p><input type="button" value="Показать" id="show"/></p>' +
       '</div>';
+    document.body.innerHTML = innerHtml;
 
     document.getElementById("clear").addEventListener('click', function(){
-      var newW = window.open();
-      var name = document.getElementById('name').value;
-      var doing = document.getElementById('doing').value;
-      var friend = document.getElementById('friend').value;
-      var present = document.getElementById('present').value;
-
-      newW.document.write('<!DOCTYPE html>');
-      newW.document.write('<html><head></head><body>' +
-        '<h1>'+name+' и '+ present+'</h1>' +
-        '<p>В одном лесу жила маленькая ' +
-        name +
-        ', которая очень любила ' +
-        doing +
-        ' чудесные песни. ' +
-        'У нее так хорошо получалось, что весь лес собирался послушать ее! ' +
-        'От сороки она узнала, что у людей принято дарить ' +
-        present +
-        ' любимым исполнителям. А ' +
-        present +
-        ' она любила также сильно, как и ' +
-        doing +
-        '. Долго грустила ' +
-        name +
-        '. Но однажды, после очередного импровизированного концерта, ' +
-        friend +
-        ' подлетел к ' +
-        name +
-        ' и подарил ей... ' +
-        present +
-        '! Уж он то был истинным джентельменом! ' +
-        name +
-        ' была невероятно счастлива!!!</p>' +
-        '<button onclick="window.close()">Закрыть</button></body></html>');
+      document.body.innerHTML = innerHtml;
     });
 
-    document.getElementById("generate").addEventListener('click', function(){
-      var newW = window.open();
-      var name = document.getElementById('name').value;
-      var doing = document.getElementById('doing').value;
-      var friend = document.getElementById('friend').value;
-      var present = document.getElementById('present').value;
+    document.getElementById("show").addEventListener('click', function(){
+      var name = document.getElementById('select').value;
+      var portrait = name + '.jpg';
+      var backgrounds = document.getElementsByClassName('back-radio');
+      var backgroundChecked = null;
+      for(var i=0; i < backgrounds.length; i++){
+        if (backgrounds[i].checked){
+          backgroundChecked = backgrounds[i].id;
+        }
+      }
+      if (backgroundChecked === null){
+        throw new Error('Need check background!');
+      }
+      var background = backgroundChecked + '.jpg';
 
-      newW.document.write('<!DOCTYPE html>');
-      newW.document.write('<html><head></head><body>' +
-        '<h1>'+name+' и '+ present+'</h1>' +
-        '<p>В одном лесу жила маленькая ' +
-        name +
-        ', которая очень любила ' +
-        doing +
-        ' чудесные песни. ' +
-        'У нее так хорошо получалось, что весь лес собирался послушать ее! ' +
-        'От сороки она узнала, что у людей принято дарить ' +
-        present +
-        ' любимым исполнителям. А ' +
-        present +
-        ' она любила также сильно, как и ' +
-        doing +
-        '. Долго грустила ' +
-        name +
-        '. Но однажды, после очередного импровизированного концерта, ' +
-        friend +
-        ' подлетел к ' +
-        name +
-        ' и подарил ей... ' +
-        present +
-        '! Уж он то был истинным джентельменом! ' +
-        name +
-        ' была невероятно счастлива!!!</p>' +
-        '<button onclick="window.close()">Закрыть</button></body></html>');
+      var style = 'font-style:' +
+        (document.getElementById('text-cursive').checked ?'italic':'normal') + ';' +
+      'font-weight:' +
+      (document.getElementById('text-bold').checked ?'bold':'normal') + ';' +
+      'text-decoration:' +
+      (document.getElementById('text-underline').checked ?'underline':'none') + ';';
+
+      var text = '<!DOCTYPE html>' +
+        '<html><head></head><body style="background:' + background + '">' +
+        '<h1 style="'+ style +'">'+name+'</h1>' +
+        '<img src="./'+portrait+'"/>' +
+        '<p style="'+ style + '">'+ document.getElementById('sign').value + '</p>' +
+        '<button onclick="window.close()">Закрыть</button></body></html>';
+
+      var newW = window.open();
+      newW.document.write(text);
     });
   });
 
