@@ -3,6 +3,8 @@
  */
 (function(){
   window.addEventListener('load', function(){
+    var pics = ['./gippopotam-1.jpg', './akula-1.jpg', './hobot-1.jpg'];
+    var current = -1;
     var innerHtml = '<div style="color: #444444"><h1>Наведи курсор на название животного</h1>' +
         '<table style="border: 1px solid #444444">' +
           '<tr>' +
@@ -17,7 +19,13 @@
           '<tr>' +
             '<td id="mam" style="padding: 5px;border: 1px solid #444444">МАМОНТ</td>' +
           '</tr>' +
-      '</table>' +
+        '</table>' +
+        '<div style="margin-top: 50px;">' +
+          '<img id="slide" src="'+ getNext() +'"/>' +
+        '</div>' +
+        '<div style="margin-top: 10px;">' +
+          '<button id="next-button">Следующая</button>' +
+        '</div>' +
       '</div>';
     document.body.innerHTML = innerHtml;
 
@@ -33,9 +41,20 @@
       document.getElementById(id).addEventListener('mouseleave', onLeave);
     }
 
-    addListeners('hip', 'gippopotam-1.jpg');
-    addListeners('ack', 'akula-1.jpg');
-    addListeners('mam', 'hobot-1.jpg');
+    function getNext (){
+      if (++current >= pics.length){
+        current = 0;
+      }
+      return pics[current];
+    }
+
+    addListeners('hip', pics[0]);
+    addListeners('ack', pics[1]);
+    addListeners('mam', pics[2]);
+
+    document.getElementById('next-button').addEventListener('click', function(){
+      document.getElementById('slide').src = getNext();
+    });
   });
 
 })();
