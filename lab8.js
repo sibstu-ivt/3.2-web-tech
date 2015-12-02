@@ -17,7 +17,7 @@
 
       function animate(elem, rule, count){
         //console.log(elem, rule, count);
-       // console.log(window.screenX, window.screenY);
+        // console.log(window.screenX, window.screenY);
         count = count || 0;
         var res = rule(count, window.innerWidth || window.screenX, window.innerHeight || window.screenY);
         elem.style.left = res.left + 'px';
@@ -57,12 +57,22 @@
 
       setTimeout(function(){
         var div = document.getElementById('second');
-        function updateText(c){
-          setTimeout(function(){
-            updateText(c + Math.)
-          }, 100);
-          return
+        function animateText(elem, text, step){
+          elem.innerHTML = text.slice(0, step);
+
+          if (step < text.length){
+            var timeout = Math.floor((1 - step/text.length) * 500);
+            setTimeout(function(){
+              animateText(elem, text, step + 1);
+            }, timeout);
+          }
+          else {
+            setTimeout(function(){
+              animateText(elem, text, 0);
+            }, 5000);
+          }
         }
+        animateText(div, text, 0);
       },0);
       return '<div id="second">' +
 
